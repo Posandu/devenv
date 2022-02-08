@@ -1,11 +1,11 @@
-import React from "react"
-import { GetServerSideProps } from "next"
-import Layout from "../components/Layout"
-import Post, { PostProps } from "../components/Post"
+import React from "react";
+import { GetServerSideProps } from "next";
+import Layout from "../components/Layout";
+import Post, { PostProps } from "../components/Post";
 
 type Props = {
-  drafts: PostProps[]
-}
+  drafts: PostProps[];
+};
 
 const Drafts: React.FC<Props> = (props) => {
   return (
@@ -35,15 +35,15 @@ const Drafts: React.FC<Props> = (props) => {
         }
       `}</style>
     </Layout>
-  )
-}
+  );
+};
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch("/api/drafts")
-  const drafts = await res.json()
+  const res = await fetch(process.env.NEXT_PUBLIC_URL + "/api/drafts");
+  const drafts = await res.json();
   return {
     props: { drafts },
-  }
-}
+  };
+};
 
-export default Drafts
+export default Drafts;

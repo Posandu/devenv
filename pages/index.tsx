@@ -1,19 +1,20 @@
-import React from 'react'
-import { GetServerSideProps } from 'next'
-import Layout from '../components/Layout'
-import Post, { PostProps } from '../components/Post'
+import React from "react";
+import { GetServerSideProps } from "next";
+import Layout from "../components/Layout";
+import Post, { PostProps } from "../components/Post";
 
 type Props = {
-  feed: PostProps[]
-}
+  feed: PostProps[];
+};
 
-const Blog: React.FC<Props> = props => {
+const Blog: React.FC<Props> = (props) => {
   return (
     <Layout>
       <div className="page">
         <h1>My Blog</h1>
+        {process.env.URL_PUBLIC}
         <main>
-          {props.feed.map(post => (
+          {props.feed.map((post) => (
             <div key={post.id} className="post">
               <Post post={post} />
             </div>
@@ -35,15 +36,15 @@ const Blog: React.FC<Props> = props => {
         }
       `}</style>
     </Layout>
-  )
-}
+  );
+};
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch('/api/feed')
-  const feed = await res.json()
+  const res = await fetch(process.env.NEXT_PUBLIC_URL + "/api/feed");
+  const feed = await res.json();
   return {
     props: { feed },
-  }
-}
+  };
+};
 
-export default Blog
+export default Blog;
