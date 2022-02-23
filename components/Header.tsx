@@ -1,69 +1,77 @@
-import React from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
+import React from "react";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { useUser } from "@auth0/nextjs-auth0";
+import { Button, Dialog, DialogContent, Menu, MenuItem } from "@mui/material";
 
 const Header: React.FC = () => {
-  const router = useRouter()
-  const isActive: (pathname: string) => boolean =
-    pathname => router.pathname === pathname
+	const router = useRouter();
+	const { user, error, isLoading } = useUser();
+	const [logoutConfirm, setLogoutConfirm] = React.useState(false);
+	const [anchorEl, setAnchorEl] = React.useState(null);
 
-  return(
-    <nav>
-      <div className="left">
-        <Link href="/">
-          <a className="bold" data-active={isActive('/')}>
-            Blog
-          </a>
-        </Link>
-        <Link href="/drafts">
-          <a data-active={isActive('/drafts')}>Drafts</a>
-        </Link>
-      </div>
-      <div className="right">
-        <Link href="/signup">
-          <a data-active={isActive('/signup')}>Signup</a>
-        </Link>
-        <Link href="/create">
-          <a data-active={isActive('/create')}>+ Create draft</a>
-        </Link>
-      </div>
-      <style jsx>{`
-        nav {
-          display: flex;
-          padding: 2rem;
-          align-items: center;
-        }
+	return (
+		<header className="flex justify-center align-middle border-b p-4 pb-2 pt-2 border-gray-200">
+			<div className="flex-1 flex items-center">
+				<span className="text-2xl short m-0 font-semibold text-gray-600">
+					Notelu
+				</span>
+			</div>
+			<div className="flex-1 flex items-center justify-end">
+				{user && (
+					<>
+						<button
+							className="m-0 p-0 ml-4 overflow-hidden rounded-full hover:ring-2 flex justify-center items-center focus:ring-4 focus:shadow-2xl active:scale-90 transition-all"
+							onClick={(event) => setAnchorEl(event.target)}
+						>
+							<img
+								src={user.picture}
+								alt={user.name}
+								className="w-8 h-8 rounded-full"
+							/>
+						</button>
+						<Menu
+							anchorEl={anchorEl}
+							open={Boolean(anchorEl)}
+							onClose={() => setAnchorEl(null)}
+						>
+							<div className="p-4 pt-2">
+								<h2 className="text-sm text-gray-400">{user.name}</h2>
+							</div>
 
-        .bold {
-          font-weight: bold;
-        }
+							<MenuItem
+								onClick={() => {
+									setLogoutConfirm(true);
+								}}
+							>
+								Logout
+							</MenuItem>
+						</Menu>
+					</>
+				)}
+			</div>
 
-        a {
-          text-decoration: none;
-          color: #000;
-          display: inline-block;
-        }
+			<Dialog open={logoutConfirm}>
+				<DialogContent>
+					<h1 className="text-xl mb-2">Log out?</h1>
+					<p className="text-gray-600 mb-2">
+						Are you sure you want to log out?
+					</p>
+					<div className="p-2"></div>
+					<Button
+						color="error"
+						onClick={() => {
+							setLogoutConfirm(false);
+							router.push("/api/auth/logout");
+						}}
+					>
+						Yes
+					</Button>
+					<Button onClick={() => setLogoutConfirm(false)}>No</Button>
+				</DialogContent>
+			</Dialog>
+		</header>
+	);
+};
 
-        .left a[data-active='true'] {
-          color: gray;
-        }
-
-        a + a {
-          margin-left: 1rem;
-        }
-
-        .right {
-          margin-left: auto;
-        }
-
-        .right a {
-          border: 1px solid black;
-          padding: 0.5rem 1rem;
-          border-radius: 3px;
-        }
-      `}</style>
-    </nav>
-  )
-}
-
-export default Header
+export default Header;

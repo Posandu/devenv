@@ -12,20 +12,33 @@
     "start": "next start"
   },
   "dependencies": {
-    "@prisma/client": "3.8.1",
+    "@auth0/nextjs-auth0": "^1.7.0",
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@material/checkbox": "^13.0.0",
+    "@mui/material": "^5.4.1",
+    "@prisma/client": "^3.9.2",
+    "axios": "^0.25.0",
     "next": "12.0.10",
+    "nextjs-progressbar": "^0.0.13",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-markdown": "8.0.0"
+    "react-hot-toast": "^2.2.0",
+    "react-icons": "^4.3.1",
+    "react-markdown": "^8.0.0",
+    "react-syntax-highlighter": "^15.4.5",
+    "react-tooltip": "^4.2.21",
+    "rehype-highlight": "^5.0.2",
+    "remark-gfm": "^3.0.1"
   },
   "devDependencies": {
     "@types/node": "16.11.22",
     "@types/react": "17.0.39",
-    "prisma": "3.8.1",
+    "autoprefixer": "^10.4.2",
+    "postcss": "^8.4.6",
+    "prisma": "^3.9.2",
+    "tailwindcss": "^3.0.19",
     "ts-node": "10.5.0",
     "typescript": "4.5.5"
-  },
-  "prisma": {
-    "seed": "ts-node prisma/seed.ts"
   }
 }

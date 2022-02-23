@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+	font-family: "Archivo", sans-serif !important;
+	overflow: hidden;
+}
+
+.code {
+	font-family: "Jetbrains Mono", monospace !important;
+}
+
+.shorter {
+	font-family: "Archivo Semiexpanded", sans-serif !important;
+}
+
+#nprogress .spinner {
+	display: none !important;
+}
+
+.pop_in {
+	opacity: 0;
+	transform: scale(0.8);
+	animation: pop_in 0.3s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+@keyframes pop_in {
+	0% {
+		opacity: 0;
+		transform: translateY(2px);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+.Markdown h1 {
+	font-size: 2.5rem;
+	font-weight: 600;
+	line-height: 1.2;
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+}
+
+.color-1 {
+	@apply bg-blue-600 text-white;
+}
+.color-2 {
+	@apply bg-red-600 text-white;
+}
+.color-3 {
+	@apply bg-green-600 text-white;
+}
+.color-4 {
+	@apply bg-yellow-600 text-white;
+}
+.color-5 {
+	@apply bg-orange-600 text-white;
+}
+.color-6 {
+	@apply bg-purple-600 text-white;
+}
+.color-7 {
+	@apply bg-gray-600 text-white;
+}
+.color-8 {
+	@apply bg-indigo-600 text-white;
+}
+.color-9 {
+	@apply bg-pink-600 text-white;
+}

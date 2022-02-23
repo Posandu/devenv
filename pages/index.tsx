@@ -1,50 +1,14 @@
 import React from "react";
-import { GetServerSideProps } from "next";
-import Layout from "../components/Layout";
-import Post, { PostProps } from "../components/Post";
+import Header from "../components/Header";
+import { useUser } from "@auth0/nextjs-auth0";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
-type Props = {
-  feed: PostProps[];
-};
-
-const Blog: React.FC<Props> = (props) => {
+function Home() {
   return (
-    <Layout>
-      <div className="page">
-        <h1>My Blog</h1>
-        {process.env.URL_PUBLIC}
-        <main>
-          {props.feed.map((post) => (
-            <div key={post.id} className="post">
-              <Post post={post} />
-            </div>
-          ))}
-        </main>
-      </div>
-      <style jsx>{`
-        .post {
-          background: white;
-          transition: box-shadow 0.1s ease-in;
-        }
-
-        .post:hover {
-          box-shadow: 1px 1px 3px #aaa;
-        }
-
-        .post + .post {
-          margin-top: 2rem;
-        }
-      `}</style>
-    </Layout>
+    <>
+      <Header></Header>
+      <h1>Home</h1>
+    </>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch(process.env.NEXT_PUBLIC_URL + "/api/feed");
-  const feed = await res.json();
-  return {
-    props: { feed },
-  };
-};
-
-export default Blog;
+}
+export default Home;

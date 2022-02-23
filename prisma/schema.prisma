@@ -4,24 +4,38 @@ generator client {
 
 datasource db {
   provider = "postgres"
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+model Items {
+  id          String   @id @default(cuid())
+  name        String?
+  description String
+  tags        String?
+  background  String?
+  deleted     Boolean  @default(false)
+  archived    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  public      Boolean  @default(false)
+  owner       String
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
+model Labels {
+  id        String   @id @default(cuid())
+  name      String
+  color     String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  viewCount Int      @default(0)
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  Int?
+  owner     String
+}
+
+model ItemLabelsAdded {
+  itemId  String
+  labelId String
+  id      String @id @default(cuid())
+}
+
+model LikedItems {
+  id   String @id @default(cuid())
+  item String
+  user String
 }
