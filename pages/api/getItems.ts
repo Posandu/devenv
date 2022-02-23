@@ -12,7 +12,11 @@ export default withApiAuthRequired(async function GetItems(req, res) {
     else {
         const items = await prisma.items.findMany({
             where: {
-                owner: user.sub
+                owner: user.sub,
+                AND: {
+                    archived: false,
+                    deleted: false
+                }
             }
         })
         res.status(200).json({

@@ -29,7 +29,8 @@
     "react-syntax-highlighter": "^15.4.5",
     "react-tooltip": "^4.2.21",
     "rehype-highlight": "^5.0.2",
-    "remark-gfm": "^3.0.1"
+    "remark-gfm": "^3.0.1",
+    "sass": "^1.49.8"
   },
   "devDependencies": {
     "@types/node": "16.11.22",

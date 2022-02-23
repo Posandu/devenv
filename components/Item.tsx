@@ -26,12 +26,51 @@ function Item({ id, title, description, bg, ispublic, tags }: ItemProps) {
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		const _labels = fetch(process.env.NEXT_PUBLIC_URL + "/api/getItemlabels").then(
-			(res) => res.json()
-		).then((res) => {
-			setLabels(res);
-			setLoading(false);
-		});
+		if (detailsOpen) {
+			const _labels = fetch(
+				process.env.NEXT_PUBLIC_URL + "/api/getItemLabels",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						id: id,
+					}),
+				}
+			)
+				.then((res) => res.json())
+				.then((res) => {
+					const labels = res.labels;
+					if (labels.length > 0) {
+						/**
+						 * For each label, fetch the label name and color
+						 */
+						const labels_fetched = labels.map(
+							async (label: { labelId: string }): Promise<any> =>
+								fetch(`${process.env.NEXT_PUBLIC_URL}/api/getSingleLabel`, {
+									method: "POST",
+									headers: {
+										"Content-Type": "application/json",
+									},
+									body: JSON.stringify({
+										id: label.labelId,
+									}),
+								})
+									.then((res) => res.json())
+									.then((res) => {
+										return res;
+									})
+						);
+
+						Promise.all(labels_fetched).then((res) => {
+							setLabels(res);
+						});
+						console.log(labels);
+					}
+					setLoading(false);
+				});
+		}
 	}, [detailsOpen]);
 
 	return (
@@ -50,6 +89,7 @@ function Item({ id, title, description, bg, ispublic, tags }: ItemProps) {
 			`}</style>
 
 			<div className="p-4 mr-4 mt-4 mb-4 inline-block border rounded hover:shadow-sm box">
+				{console.log("LABELS STATE ", labels)}
 				<h1>{title}</h1>
 				<p
 					className="text-gray-700 text-sm shorter"
@@ -80,7 +120,25 @@ function Item({ id, title, description, bg, ispublic, tags }: ItemProps) {
 			<Dialog open={detailsOpen} onClose={() => setDetailsOpen(false)}>
 				{loading && <CircularProgress className="m-4" />}
 				<div className={`p-4 transition-all ${loading && "opacity-25"}`}>
+					{labels && (
+						<div className="mb-2">
+							{labels.map((label: any, i: number) => {
+								label = label.label;
+								return (
+									<div
+										key={label.id + i}
+										className={`color-${label.color} inline-block p-1 text-sm rounded mr-2`}
+									>
+										{label.name}
+										{console.log(label)}
+									</div>
+								);
+							})}
+						</div>
+					)}
+
 					{title && <h1 className="shorter text-2xl mb-2">{title}</h1>}
+
 					<ReactMarkdown
 						rehypePlugins={[rehypeHighlight]}
 						remarkPlugins={[remarkGfm]}
