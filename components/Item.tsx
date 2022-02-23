@@ -1,4 +1,9 @@
-import { CircularProgress, Dialog, IconButton } from "@mui/material";
+import {
+	CircularProgress,
+	Dialog,
+	DialogContent,
+	IconButton,
+} from "@mui/material";
 import { useState, useEffect } from "react";
 import { GoPencil } from "react-icons/go";
 import { MdOutlineOpenInFull } from "react-icons/md";
@@ -6,6 +11,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 import { BsEye } from "react-icons/bs";
+import EditItem from "./EditItem";
 
 interface ItemProps {
 	id: string;
@@ -14,9 +20,20 @@ interface ItemProps {
 	bg?: string;
 	ispublic?: boolean;
 	tags?: string[];
+	userid?: string;
+	user: string;
 }
 
-function Item({ id, title, description, bg, ispublic, tags }: ItemProps) {
+function Item({
+	id,
+	title,
+	description,
+	bg,
+	ispublic,
+	tags,
+	userid,
+	user,
+}: ItemProps) {
 	const _bg = +bg || "no";
 	const isbg = _bg > 0 && _bg <= 5 ? true : false;
 	const escape = (str: string) => {
@@ -25,6 +42,7 @@ function Item({ id, title, description, bg, ispublic, tags }: ItemProps) {
 	const [detailsOpen, setDetailsOpen] = useState(false);
 	const [labels, setLabels] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const [editDialogOpen, setEditDialogOpen] = useState(false);
 
 	useEffect(() => {
 		if (detailsOpen) {
@@ -91,7 +109,6 @@ function Item({ id, title, description, bg, ispublic, tags }: ItemProps) {
 			<div className="p-4 mr-4 mt-4 mb-4 inline-block relative border rounded hover:shadow-sm box">
 				{ispublic && (
 					<p>
-						
 						<BsEye className="icon absolute top-2 left-2 pointer-events-none z-50 text-gray-300" />
 					</p>
 				)}
@@ -117,9 +134,19 @@ function Item({ id, title, description, bg, ispublic, tags }: ItemProps) {
 					>
 						<MdOutlineOpenInFull />
 					</IconButton>
-					<IconButton size="small">
-						<GoPencil />
-					</IconButton>
+					{userid === user && (
+						<IconButton
+							size="small"
+							onClick={() => {
+								setEditDialogOpen(true);
+								document.addEventListener("__close__dialog", () => {
+									setEditDialogOpen(false);
+								});
+							}}
+						>
+							<GoPencil />
+						</IconButton>
+					)}
 				</div>
 			</div>
 
@@ -178,6 +205,12 @@ function Item({ id, title, description, bg, ispublic, tags }: ItemProps) {
 						</IconButton>
 					</div>
 				</div>
+			</Dialog>
+
+			<Dialog open={editDialogOpen}>
+				<DialogContent>
+					<EditItem id={id} />
+				</DialogContent>
 			</Dialog>
 		</>
 	);

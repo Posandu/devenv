@@ -19,7 +19,6 @@ export default withPageAuthRequired(function Explore({ user }) {
 				</div>
 				<div className="col-span-9 p-6 overflow-auto max-h-screen">
 					<h1 className="shorter text-4xl">{user.name}</h1>
-					<MyItems />
 				</div>
 			</div>
 		</>

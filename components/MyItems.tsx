@@ -3,11 +3,17 @@ import { useState, useEffect } from "react";
 import Item from "./Item";
 import Image from "next/image";
 import { BiRefresh } from "react-icons/bi";
+import { useUser } from "@auth0/nextjs-auth0";
 
-function MyItems() {
+interface Props {
+	userid: string;
+}
+
+function MyItems({ userid }: Props) {
 	const [items, setItems] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [refresh, setRefresh] = useState(false);
+	const { user, error, isLoading } = useUser();
 
 	useEffect(() => {
 		const fetchItems = async () => {
@@ -49,6 +55,8 @@ function MyItems() {
 						bg={item.background}
 						ispublic={item.public}
 						tags={item.tags.split(",")}
+						userid={userid}
+						user={user.sub}
 					/>
 				))}
 			{!loading && items.length === 0 && (

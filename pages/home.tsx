@@ -7,6 +7,8 @@ import MyItems from "../components/MyItems";
 import Sidebar from "../components/Sidebar";
 
 export default withPageAuthRequired(function Home({ user }) {
+	const UserID = user.sub;
+
 	const message = () => {
 		let message = "Morning";
 		const hour = new Date().getHours();
@@ -33,7 +35,7 @@ export default withPageAuthRequired(function Home({ user }) {
 					<h1 className="shorter text-2xl mb-2">{message()}</h1>
 					<AddItem />
 					<div className="p-4"></div>
-					<MyItems />
+					<MyItems userid={UserID}/>
 				</div>
 			</div>
 		</>
