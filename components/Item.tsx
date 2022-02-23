@@ -31,7 +31,7 @@ function Item({ id, title, description, bg, ispublic, tags }: ItemProps) {
 		).then((res) => {
 			setLabels(res);
 			setLoading(false);
-		}
+		});
 	}, [detailsOpen]);
 
 	return (
