@@ -202,3 +202,8 @@ code.hljs {
 .color-9 {
 	@apply bg-pink-600 text-white;
 }
+
+.col-span-9.p-6 {
+	max-height: 100vh;
+	overflow: auto;
+}

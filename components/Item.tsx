@@ -5,6 +5,7 @@ import { MdOutlineOpenInFull } from "react-icons/md";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
+import { BsEye } from "react-icons/bs";
 
 interface ItemProps {
 	id: string;
@@ -87,9 +88,14 @@ function Item({ id, title, description, bg, ispublic, tags }: ItemProps) {
 						: ""}
 				}
 			`}</style>
+			<div className="p-4 mr-4 mt-4 mb-4 inline-block relative border rounded hover:shadow-sm box">
+				{ispublic && (
+					<p>
+						
+						<BsEye className="icon absolute top-2 left-2 pointer-events-none z-50 text-gray-300" />
+					</p>
+				)}
 
-			<div className="p-4 mr-4 mt-4 mb-4 inline-block border rounded hover:shadow-sm box">
-				{console.log("LABELS STATE ", labels)}
 				<h1>{title}</h1>
 				<p
 					className="text-gray-700 text-sm shorter"
@@ -117,7 +123,11 @@ function Item({ id, title, description, bg, ispublic, tags }: ItemProps) {
 				</div>
 			</div>
 
-			<Dialog open={detailsOpen} onClose={() => setDetailsOpen(false)}>
+			<Dialog
+				open={detailsOpen}
+				onClose={() => setDetailsOpen(false)}
+				fullWidth={true}
+			>
 				{loading && <CircularProgress className="m-4" />}
 				<div className={`p-4 transition-all ${loading && "opacity-25"}`}>
 					{labels && (
@@ -130,7 +140,6 @@ function Item({ id, title, description, bg, ispublic, tags }: ItemProps) {
 										className={`color-${label.color} inline-block p-1 text-sm rounded mr-2`}
 									>
 										{label.name}
-										{console.log(label)}
 									</div>
 								);
 							})}
