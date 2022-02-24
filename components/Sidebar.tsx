@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { BiNote } from "react-icons/bi";
@@ -6,6 +6,7 @@ import { MdOutlineExplore, MdLabelOutline } from "react-icons/md";
 import { VscTrash } from "react-icons/vsc";
 import { HiArchive } from "react-icons/hi";
 import Link from "next/link";
+import { CircularProgress } from "@mui/material";
 
 interface SidebarItemProps {
 	icon: React.ReactElement;
@@ -16,7 +17,7 @@ interface SidebarItemProps {
 function Item({ icon, label, href }: SidebarItemProps) {
 	const router = useRouter();
 	const isActive: (pathname: string) => boolean = (pathname) =>
-		router.pathname === pathname;
+		router.pathname.includes(pathname);
 	const activeClasses =
 		"text-indigo-600 font-semibold bg-indigo-50 hover:bg-indigo-100 focus:bg-indigo-100 focus:border-indigo-800";
 
@@ -36,11 +37,38 @@ function Item({ icon, label, href }: SidebarItemProps) {
 
 function Sidebar() {
 	const router = useRouter();
+	const [labels, setLabels] = useState([]);
+	const [loading, setLoading] = useState(true);
+	useEffect(() => {
+		const _labels = fetch(process.env.NEXT_PUBLIC_URL + "/api/getLabels", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		})
+			.then((res) => res.json())
+			.then((res) => {
+				const labels = res.labels;
+				setLabels(labels);
+				setLoading(false);
+			});
+	}, []);
 
 	return (
 		<div className="flex flex-col min-h-screen">
 			<Item icon={<BiNote />} label="Notes" href="/home" />
 			<Item icon={<MdLabelOutline />} label="Labels" href="/labels" />
+			{loading ? (
+				<CircularProgress />
+			) : (
+				<div className="flex flex-col">
+					{labels.map((label) => (
+						<Link href={`/labels/?id=${label.id}`} key={label.id}>
+							<div className="text-sm pl-16 mt-2 cursor-pointer hover:bg-gray-100 p-2 rounded-r-full transition-all focus:bg-gray-400">{label.name}</div>
+						</Link>
+					))}
+				</div>
+			)}
 			<Item icon={<MdOutlineExplore />} label="Explore" href="/explore" />
 			<Item icon={<VscTrash />} label="Trash" href="/trash" />
 			<Item icon={<HiArchive />} label="Archive" href="/archive" />

@@ -58,7 +58,33 @@ function MyItems({ userid, trash, archived }: Props) {
 						}}
 					/>
 				</Tooltip>
+				{trash && !archived && (
+					<Button
+						onClick={() => {
+							setLoading(true);
+							fetch(process.env.NEXT_PUBLIC_URL + "/api/emptyTrash", {
+								method: "POST",
+								headers: {
+									"Content-Type": "application/json",
+								},
+								body: JSON.stringify({
+									userid: userid,
+								}),
+							})
+								.then((res) => res.json())
+								.then((res) => {
+									if (res.success) {
+										setRefresh(!refresh);
+									}
+								});
+						}}
+						disabled={isLoading}
+					>
+						Empty Trash
+					</Button>
+				)}
 			</div>
+
 			{loading && <CircularProgress className="m-4" />}
 			{!loading &&
 				items.map((item) => (

@@ -14,6 +14,7 @@ import { BsEye } from "react-icons/bs";
 import { FaTrashRestoreAlt } from "react-icons/fa";
 import EditItem from "./EditItem";
 import toast from "react-hot-toast";
+import Router from "next/router";
 
 interface ItemProps {
 	id: string;
@@ -170,6 +171,30 @@ function Item({
 									.then((res) => res.json())
 									.then((res) => {
 										toast.success("Done");
+										Router.push("/home");
+									});
+							}}
+						>
+							<FaTrashRestoreAlt />
+						</IconButton>
+					)}
+					{archived && !trash && userid === user && (
+						<IconButton
+							size="small"
+							onClick={() => {
+								fetch(process.env.NEXT_PUBLIC_URL + "/api/unArchive", {
+									method: "POST",
+									headers: {
+										"Content-Type": "application/json",
+									},
+									body: JSON.stringify({
+										id: id,
+									}),
+								})
+									.then((res) => res.json())
+									.then((res) => {
+										toast.success("Done");
+										Router.push("/home");
 									});
 							}}
 						>

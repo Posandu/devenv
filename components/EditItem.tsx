@@ -276,6 +276,35 @@ function EditItem({ id }: EditItemProps) {
 					>
 						Move to trash
 					</Button>
+
+					<Button
+						onClick={() => {
+							setLoading(true);
+							fetch(process.env.NEXT_PUBLIC_URL + "/api/archiveItem", {
+								method: "POST",
+								headers: {
+									"Content-Type": "application/json",
+								},
+								body: JSON.stringify({
+									id: details.id,
+								}),
+							})
+								.then((res) => res.json())
+								.then((res) => {
+									if (res.success) {
+										document.dispatchEvent(new CustomEvent("__close__dialog"));
+										toast.success("Item archived");
+									} else {
+										toast.error("Error archived item");
+										setLoading(false);
+									}
+								});
+						}}
+						disabled={loading}
+						color="error"
+					>
+						Archive
+					</Button>
 				</>
 			)}
 		</>
