@@ -7,21 +7,28 @@ import { useUser } from "@auth0/nextjs-auth0";
 
 interface Props {
 	userid: string;
+	trash?: boolean;
+	archived?: boolean;
 }
 
-function MyItems({ userid }: Props) {
+function MyItems({ userid, trash, archived }: Props) {
 	const [items, setItems] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [refresh, setRefresh] = useState(false);
 	const { user, error, isLoading } = useUser();
 
 	useEffect(() => {
+		console.log("Refreshing...");
 		const fetchItems = async () => {
 			const res = await fetch(process.env.NEXT_PUBLIC_URL + "/api/getItems", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
+				body: JSON.stringify({
+					trash: trash || false,
+					archived: archived || false,
+				}),
 			});
 			const data = await res.json();
 			setItems(data.items);
@@ -30,10 +37,18 @@ function MyItems({ userid }: Props) {
 		fetchItems();
 	}, [refresh]);
 
+	useEffect(() => {
+		setInterval(() => {
+			setRefresh(!refresh);
+		}, 10000);
+	}, []);
+
 	return (
 		<div>
 			<div className="mb-4 items-center">
-				<h1 className="text-4xl shorter inline-block m-0">My Items</h1>
+				<h1 className="text-4xl shorter inline-block m-0">
+					{archived ? "Archived" : trash ? "Trash" : "My"} Items
+				</h1>
 				<Tooltip title="Refresh">
 					<IconButton
 						className={(loading ? "animate-spin" : "") + " inline-block"}
@@ -57,6 +72,8 @@ function MyItems({ userid }: Props) {
 						tags={item.tags.split(",")}
 						userid={userid}
 						user={user.sub}
+						trash={trash}
+						archived={archived}
 					/>
 				))}
 			{!loading && items.length === 0 && (

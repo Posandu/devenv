@@ -5,13 +5,15 @@ import {
 	IconButton,
 } from "@mui/material";
 import { useState, useEffect } from "react";
-import { GoPencil } from "react-icons/go";
+import { GoPencil, GoUnmute } from "react-icons/go";
 import { MdOutlineOpenInFull } from "react-icons/md";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 import { BsEye } from "react-icons/bs";
+import { FaTrashRestoreAlt } from "react-icons/fa";
 import EditItem from "./EditItem";
+import toast from "react-hot-toast";
 
 interface ItemProps {
 	id: string;
@@ -22,6 +24,8 @@ interface ItemProps {
 	tags?: string[];
 	userid?: string;
 	user: string;
+	trash?: boolean;
+	archived?: boolean;
 }
 
 function Item({
@@ -33,6 +37,8 @@ function Item({
 	tags,
 	userid,
 	user,
+	trash,
+	archived,
 }: ItemProps) {
 	const _bg = +bg || "no";
 	const isbg = _bg > 0 && _bg <= 5 ? true : false;
@@ -126,6 +132,7 @@ function Item({
 				>
 					{description}
 				</p>
+
 				<div className="mt-2 text-gray-600">
 					<IconButton
 						size="small"
@@ -134,7 +141,7 @@ function Item({
 					>
 						<MdOutlineOpenInFull />
 					</IconButton>
-					{userid === user && (
+					{!trash && !archived && userid === user && (
 						<IconButton
 							size="small"
 							onClick={() => {
@@ -145,6 +152,28 @@ function Item({
 							}}
 						>
 							<GoPencil />
+						</IconButton>
+					)}
+					{trash && !archived && userid === user && (
+						<IconButton
+							size="small"
+							onClick={() => {
+								fetch(process.env.NEXT_PUBLIC_URL + "/api/restoreItem", {
+									method: "POST",
+									headers: {
+										"Content-Type": "application/json",
+									},
+									body: JSON.stringify({
+										id: id,
+									}),
+								})
+									.then((res) => res.json())
+									.then((res) => {
+										toast.success("Done");
+									});
+							}}
+						>
+							<FaTrashRestoreAlt />
 						</IconButton>
 					)}
 				</div>
@@ -195,15 +224,6 @@ function Item({
 							))}
 						</div>
 					)}
-
-					<div className="mt-2 text-gray-600">
-						<IconButton size="small" className="mr-2">
-							<MdOutlineOpenInFull />
-						</IconButton>
-						<IconButton size="small">
-							<GoPencil />
-						</IconButton>
-					</div>
 				</div>
 			</Dialog>
 

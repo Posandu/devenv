@@ -3,10 +3,10 @@ import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0';
 
 export default withApiAuthRequired(async function deleteLabel(req, res) {
     const { user } = getSession(req, res);
-    const { id } = req.body;
+    const { id, trash } = req.body;
 
-    if (req.method !== 'DELETE') {
-        res.status(400).send({ message: 'Only DELETE requests allowed' })
+    if (req.method !== 'POST') {
+        res.status(400).send({ message: 'Only POST requests allowed' })
         return
     }
 
@@ -32,24 +32,45 @@ export default withApiAuthRequired(async function deleteLabel(req, res) {
         }
 
         // Delete the item
-        const deletedItem = await prisma.items.delete({
-            where: {
-                id: id,
-            }
-        });
+        if (!trash) {
+            const deletedItem = await prisma.items.deleteMany({
+                where: {
+                    id: id,
+                    owner: user.sub
+                }
+            });
 
-        /**
-         * Delete all the item's labels
-         */
-        const deletedItems = await prisma.itemLabelsAdded.deleteMany({
-            where: {
-                itemId: id
-            }
-        });
+            /**
+             * Delete all the item's labels
+             */
+            const deletedItems = await prisma.itemLabelsAdded.deleteMany({
+                where: {
+                    itemId: id
+                }
+            });
 
-        res.status(200).send({
-            message: 'Label deleted',
-        });
+            res.status(200).send({
+                message: 'Item deleted',
+                success: true
+            });
+        }
+        
+        else {
+            const deletedItem = await prisma.items.updateMany({
+                where: {
+                    id: id,
+                    owner: user.sub
+                },
+                data: {
+                    deleted: true
+                }
+            });
+
+            res.status(200).send({
+                message: 'Item moved to trash',
+                success: true
+            });
+        }
     }
 
     deleteItem();

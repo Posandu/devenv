@@ -11,7 +11,7 @@ export default withApiAuthRequired(async function GetItems(req, res) {
     }
 
     else {
-        const item = await prisma.items.findMany({
+        const item = await prisma.items.findFirst({
             where: {
                 owner: user.sub,
                 id: id,
