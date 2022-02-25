@@ -2,7 +2,15 @@ import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useUser } from "@auth0/nextjs-auth0";
-import { Button, Dialog, DialogContent, Menu, MenuItem } from "@mui/material";
+import {
+	Button,
+	Dialog,
+	DialogContent,
+	IconButton,
+	Menu,
+	MenuItem,
+} from "@mui/material";
+import { MdMenu } from "react-icons/md";
 
 const Header: React.FC = () => {
 	const router = useRouter();
@@ -13,13 +21,27 @@ const Header: React.FC = () => {
 	return (
 		<header className="flex justify-center align-middle border-b p-4 pb-2 pt-2 border-gray-200">
 			<div className="flex-1 flex items-center">
-				<span className="text-2xl short m-0 font-semibold text-gray-600">
-					Notelu
+				<span className="text-2xl short m-0 font-bold shorter text-gray-600">
+					Devenv
 				</span>
 			</div>
 			<div className="flex-1 flex items-center justify-end">
 				{user && (
 					<>
+						{
+							/** If mobile */
+							typeof window !== "undefined" && window.innerWidth < 768 && (
+								<IconButton
+									onClick={() => {
+										document
+											.querySelector("#sidebar____")
+											?.classList.toggle("hidden");
+									}}
+								>
+									<MdMenu />
+								</IconButton>
+							)
+						}
 						<button
 							className="m-0 p-0 ml-4 overflow-hidden rounded-full hover:ring-2 flex justify-center items-center focus:ring-4 focus:shadow-2xl active:scale-90 transition-all"
 							onClick={(event) => setAnchorEl(event.target)}

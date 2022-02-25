@@ -11,7 +11,7 @@ export default withPageAuthRequired(function Archive({ user }) {
 				<div className="col-span-3 flex flex-col">
 					<Sidebar />
 				</div>
-				<div className="col-span-9 p-6">
+				<div className="md:col-span-9 p-6 col-span-12 overflow-auto max-h-screen">
 					<MyItems userid={user.sub} trash={false} archived={true} />
 				</div>
 			</div>

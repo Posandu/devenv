@@ -207,3 +207,19 @@ code.hljs {
 	max-height: 100vh;
 	overflow: auto;
 }
+
+// Hide on mobile
+@media (max-width: 768px) {
+	.grid.grid-cols-12 .col-span-3.flex.flex-col {
+		position: fixed;
+		top: 0;
+		left: 0;
+		max-width: 300px;
+		min-width: 200px;
+		max-height: 100vh;
+		overflow: auto;
+		z-index: 999;
+		background: white;
+		@apply shadow-2xl;
+	}
+}

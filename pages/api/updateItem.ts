@@ -64,12 +64,23 @@ export default withApiAuthRequired(async function UpDateItem(req, res) {
                     });
                 });
             }
+            else {
+                /**
+                 * Delete all labels
+                 */
+                await prisma.itemLabelsAdded.deleteMany({
+                    where: {
+                        itemId: itemID
+                    }
+                });
+            }
             success = true;
             message = 'Item edited successfully';
         } else {
             message = 'Something went wrong';
         }
     }
+
 
 
     res.status(200).json({

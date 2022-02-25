@@ -6,9 +6,20 @@ import AddLabel from "../components/AddLabel";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Mylabels from "../components/Labels";
+import MyItems from "../components/MyItems";
 
-export default withPageAuthRequired(function Labels({ user }): JSX.Element {
+export default function Labels({ user, query }): JSX.Element {
 	const [openAddDialog, setOpenAddDialog] = useState(false);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		setLoading(false);
+		// When the page location changes, we need to refresh the data
+		document.addEventListener("popstate", () => {
+			setLoading(true);
+			setLoading(false);
+		});
+	}, []);
 
 	return (
 		<>
@@ -17,7 +28,8 @@ export default withPageAuthRequired(function Labels({ user }): JSX.Element {
 				<div className="col-span-3 flex flex-col">
 					<Sidebar />
 				</div>
-				<div className="col-span-9 p-6">
+
+				<div className="md:col-span-9 p-6 col-span-12 overflow-auto max-h-screen">
 					<div className="flex align-middle">
 						<div className="flex-1">
 							<h1 className="shorter text-4xl">Labels</h1>
@@ -40,6 +52,8 @@ export default withPageAuthRequired(function Labels({ user }): JSX.Element {
 
 					<h2 className="text-2xl mt-4 mb-4 inline-block mr-2">My Labels</h2>
 					<Mylabels />
+					<div className="p-4"></div>
+					{!loading && <MyItems label={query.id} userid={user.sub} />}
 				</div>
 
 				<Dialog open={openAddDialog}>
@@ -50,6 +64,14 @@ export default withPageAuthRequired(function Labels({ user }): JSX.Element {
 			</div>
 		</>
 	);
+}
+
+export const getServerSideProps = withPageAuthRequired({
+	getServerSideProps: async ({ query }) => {
+		return {
+			props: {
+				query: query,
+			},
+		};
+	},
 });
-
-

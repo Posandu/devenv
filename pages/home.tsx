@@ -1,6 +1,4 @@
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-import Link from "next/link";
-import { useEffect, useState } from "react";
 import AddItem from "../components/AddItem";
 import Header from "../components/Header";
 import MyItems from "../components/MyItems";
@@ -28,10 +26,10 @@ export default withPageAuthRequired(function Home({ user }) {
 		<>
 			<Header />
 			<div className="grid grid-cols-12">
-				<div className="col-span-3 flex flex-col">
+				<div className="col-span-3 flex flex-col" id="sidebar____">
 					<Sidebar />
 				</div>
-				<div className="col-span-9 p-6">
+				<div className="md:col-span-9 p-6 col-span-12 overflow-auto max-h-screen">
 					<h1 className="shorter text-2xl mb-2">{message()}</h1>
 					<AddItem />
 					<div className="p-4"></div>

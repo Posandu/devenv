@@ -63,7 +63,7 @@ function Sidebar() {
 			) : (
 				<div className="flex flex-col">
 					{labels.map((label) => (
-						<Link href={`/labels/?id=${label.id}`} key={label.id}>
+						<Link href={`/labels/?id=${label.id}&clearCache=${Math.random().toString(36)}`} key={label.id}>
 							<div className="text-sm pl-16 mt-2 cursor-pointer hover:bg-gray-100 p-2 rounded-r-full transition-all focus:bg-gray-400">{label.name}</div>
 						</Link>
 					))}

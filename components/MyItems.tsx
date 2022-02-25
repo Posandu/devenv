@@ -9,9 +9,10 @@ interface Props {
 	userid: string;
 	trash?: boolean;
 	archived?: boolean;
+	label?: string;
 }
 
-function MyItems({ userid, trash, archived }: Props) {
+function MyItems({ userid, trash, archived, label }: Props) {
 	const [items, setItems] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [refresh, setRefresh] = useState(false);
@@ -28,6 +29,7 @@ function MyItems({ userid, trash, archived }: Props) {
 				body: JSON.stringify({
 					trash: trash || false,
 					archived: archived || false,
+					label: label || null,
 				}),
 			});
 			const data = await res.json();
@@ -55,6 +57,7 @@ function MyItems({ userid, trash, archived }: Props) {
 						children={<BiRefresh />}
 						onClick={() => {
 							setRefresh(!refresh);
+							console.log("Refreshing...");
 						}}
 					/>
 				</Tooltip>
@@ -95,7 +98,7 @@ function MyItems({ userid, trash, archived }: Props) {
 						description={item.description}
 						bg={item.background}
 						ispublic={item.public}
-						tags={item.tags.split(",")}
+						tags={item.tags && item.tags.split(",")}
 						userid={userid}
 						user={user.sub}
 						trash={trash}
