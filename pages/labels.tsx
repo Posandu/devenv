@@ -7,6 +7,7 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Mylabels from "../components/Labels";
 import MyItems from "../components/MyItems";
+import Head from "next/head";
 
 export default function Labels({ user, query }): JSX.Element {
 	const [openAddDialog, setOpenAddDialog] = useState(false);
@@ -23,6 +24,9 @@ export default function Labels({ user, query }): JSX.Element {
 
 	return (
 		<>
+			<Head>
+				<title>Labels | Devenv</title>
+			</Head>
 			<Header />
 			<div className="grid grid-cols-12">
 				<div className="col-span-3 flex flex-col">

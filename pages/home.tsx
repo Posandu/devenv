@@ -3,6 +3,7 @@ import AddItem from "../components/AddItem";
 import Header from "../components/Header";
 import MyItems from "../components/MyItems";
 import Sidebar from "../components/Sidebar";
+import Head from "next/head";
 
 export default withPageAuthRequired(function Home({ user }) {
 	const UserID = user.sub;
@@ -24,6 +25,9 @@ export default withPageAuthRequired(function Home({ user }) {
 
 	return (
 		<>
+			<Head>
+				<title>Home | Devenv</title>
+			</Head>
 			<Header />
 			<div className="grid grid-cols-12">
 				<div className="col-span-3 flex flex-col" id="sidebar____">
@@ -33,9 +37,10 @@ export default withPageAuthRequired(function Home({ user }) {
 					<h1 className="shorter text-2xl mb-2">{message()}</h1>
 					<AddItem />
 					<div className="p-4"></div>
-					<MyItems userid={UserID}/>
+					<MyItems userid={UserID} />
 				</div>
 			</div>
 		</>
 	);
 });
+
