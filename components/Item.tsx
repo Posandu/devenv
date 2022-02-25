@@ -102,13 +102,21 @@ function Item({
 	return (
 		<>
 			<style jsx>{`
-				.box {
+				.box:after {
 					${isbg
 						? `
+					content: "";
+					position: absolute;
+					top: 0;
+					left: 0;
+					height: 100%;
+					width: 100%;
 					background-image: url("/images/bg/${escape(_bg.toString())}.svg");
 					background-size: cover;
 					background-position: center;
 					background-repeat: repeat;
+					pointer-events: none;
+					z-index: -1;
 					`
 						: ""}
 				}

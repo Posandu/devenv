@@ -20,12 +20,13 @@ function Item({ icon, label, href }: SidebarItemProps) {
 		router.pathname.includes(pathname);
 	const activeClasses =
 		"text-indigo-600 font-semibold bg-indigo-50 hover:bg-indigo-100 focus:bg-indigo-100 focus:border-indigo-800";
+	const normalClasses = "text-gray-600 hover:bg-gray-100 focus:bg-gray-200";
 
 	return (
 		<Link href={href}>
 			<a
-				className={`flex transition-colors border border-transparent items-center rounded-full rounded-l-none text-gray-600 p-4 shorter hover:bg-gray-100 focus:bg-gray-200 ${
-					isActive(href) && activeClasses
+				className={`flex transition-colors border border-transparent items-center rounded-full rounded-l-none p-4 shorter ${
+					isActive(href) ? activeClasses : normalClasses
 				}`}
 			>
 				<div className="text-xl">{icon}</div>
@@ -63,8 +64,15 @@ function Sidebar() {
 			) : (
 				<div className="flex flex-col">
 					{labels.map((label) => (
-						<Link href={`/labels/?id=${label.id}&clearCache=${Math.random().toString(36)}`} key={label.id}>
-							<div className="text-sm pl-16 mt-2 cursor-pointer hover:bg-gray-100 p-2 rounded-r-full transition-all focus:bg-gray-400">{label.name}</div>
+						<Link
+							href={`/labels/?id=${
+								label.id
+							}&clearCache=${Math.random().toString(36)}`}
+							key={label.id}
+						>
+							<div className="text-sm pl-16 mt-2 cursor-pointer hover:bg-gray-100 p-2 rounded-r-full transition-all focus:bg-gray-400">
+								{label.name}
+							</div>
 						</Link>
 					))}
 				</div>

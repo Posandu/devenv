@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import { useUser } from "@auth0/nextjs-auth0";
 import Head from "next/head";
 import Particles from "react-tsparticles";
+import { NextSeo } from "next-seo";
 
 function HParicles() {
 	return (
@@ -87,6 +88,7 @@ function Home() {
 			<Head>
 				<title>Devenv - the note taking app for devs</title>
 			</Head>
+			<NextSeo title="DevEnv" description="A note taking app for developers" />
 			<Header></Header>
 
 			<style jsx>{`
@@ -165,7 +167,7 @@ function Home() {
 
 				<div className="bg-indigo-600 p-16 pb-10 pt-10 text-white">
 					<h3 className="text-4xl">Get started today!</h3>
-          <div className="p-4"></div>
+					<div className="p-4"></div>
 					{!user && (
 						<a
 							href="/api/auth/login"

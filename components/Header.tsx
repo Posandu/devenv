@@ -20,7 +20,7 @@ const Header: React.FC = () => {
 	return (
 		<header className="flex justify-center align-middle border-b p-4 pb-2 pt-2 border-gray-200">
 			<div className="flex-1 flex items-center">
-				<span className="text-2xl short m-0 font-bold shorter text-gray-600">
+				<span className="text-2xl short m-0 font-bold shorter cursor-pointer focus:bg-gray-50 text-gray-600" tabIndex={1} onClick={()=>{router.push("/home")}}>
 					Devenv
 				</span>
 			</div>
