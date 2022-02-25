@@ -34,8 +34,3 @@ model ItemLabelsAdded {
   id      String @id @default(cuid())
 }
 
-model LikedItems {
-  id   String @id @default(cuid())
-  item String
-  user String
-}
