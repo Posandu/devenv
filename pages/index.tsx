@@ -129,6 +129,12 @@ function Home() {
 								Open dashboard
 							</a>
 						)}
+						<a
+								href="https://doc.devenv.tronic247.com/"
+								className="bg-gray-100 hover:bg-gray-200 text-gray-900 font-bold py-2 px-4 mt-4 ml-2 rounded-full"
+							>
+								Go to docs
+							</a>
 					</div>
 				</div>
 

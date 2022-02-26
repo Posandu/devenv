@@ -2,6 +2,7 @@ import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import MyItems from "../components/MyItems";
+import Head from "next/head";
 
 export default withPageAuthRequired(function Trash({ user }) {
 	const UserID = user.sub;
@@ -9,6 +10,9 @@ export default withPageAuthRequired(function Trash({ user }) {
 	return (
 		<>
 			<Header />
+			<Head>
+				<title>Trash | Devenv</title>
+			</Head>
 			<div className="grid grid-cols-12">
 				<div className="col-span-3 flex flex-col">
 					<Sidebar />

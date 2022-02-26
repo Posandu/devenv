@@ -7,6 +7,12 @@ body {
 	overflow: hidden;
 }
 
+@font-face {
+	font-family: "Archivo Semiexpanded";
+	src: url("/fonts/Archivo_Semiexpanded-Regular.ttf");
+}
+
+
 .code {
 	font-family: "Jetbrains Mono", monospace !important;
 }
