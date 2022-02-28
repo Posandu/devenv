@@ -33,7 +33,10 @@ export default withPageAuthRequired(function Home({ user }) {
 				<div className="col-span-3 flex flex-col" id="sidebar____">
 					<Sidebar />
 				</div>
-				<div className="md:col-span-9 p-6 col-span-12 overflow-auto max-h-screen">
+				<div
+					className="md:col-span-9 p-6 col-span-12 overflow-auto"
+					style={{ maxHeight: "calc(100vh - 50px)" }}
+				>
 					<h1 className="shorter text-2xl mb-2">{message()}</h1>
 					<AddItem />
 					<div className="p-4"></div>
@@ -43,4 +46,3 @@ export default withPageAuthRequired(function Home({ user }) {
 		</>
 	);
 });
-

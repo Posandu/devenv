@@ -60,7 +60,7 @@ function Sidebar() {
 			<Item icon={<BiNote />} label="Notes" href="/home" />
 			<Item icon={<MdLabelOutline />} label="Labels" href="/labels" />
 			{loading ? (
-				<CircularProgress />
+				<p className="ml-6 text-sm text-gray-500">Loading labels</p>
 			) : (
 				<div className="flex flex-col">
 					{labels.map((label) => (

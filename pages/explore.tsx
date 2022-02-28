@@ -15,7 +15,10 @@ export default withPageAuthRequired(function Explore({ user }) {
 				<div className="col-span-3 flex flex-col">
 					<Sidebar />
 				</div>
-				<div className="md:col-span-9 p-6 col-span-12 overflow-auto max-h-screen">
+				<div
+					className="md:col-span-9 p-6 col-span-12 overflow-auto"
+					style={{ maxHeight: "calc(100vh - 50px)" }}
+				>
 					<ExploreAll me={user.sub} />
 				</div>
 			</div>

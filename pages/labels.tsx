@@ -33,7 +33,10 @@ export default function Labels({ user, query }): JSX.Element {
 					<Sidebar />
 				</div>
 
-				<div className="md:col-span-9 p-6 col-span-12 overflow-auto max-h-screen">
+				<div
+					className="md:col-span-9 p-6 col-span-12 overflow-auto"
+					style={{ maxHeight: "calc(100vh - 50px)" }}
+				>
 					<div className="flex align-middle">
 						<div className="flex-1">
 							<h1 className="shorter text-4xl">Labels</h1>
