@@ -7,14 +7,14 @@ import {
 import { useState, useEffect } from "react";
 import { GoPencil, GoUnmute } from "react-icons/go";
 import { MdOutlineOpenInFull } from "react-icons/md";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeHighlight from "rehype-highlight";
 import { BsEye } from "react-icons/bs";
 import { FaTrashRestoreAlt } from "react-icons/fa";
 import EditItem from "./EditItem";
 import toast from "react-hot-toast";
 import Router from "next/router";
+import MarkdownIt from "markdown-it";
+import hljs from "highlight.js";
+import taskLists from "markdown-it-task-lists";
 
 interface ItemProps {
 	id: string;
@@ -237,13 +237,27 @@ function Item({
 
 					{title && <h1 className="shorter text-2xl mb-2">{title}</h1>}
 
-					<ReactMarkdown
-						rehypePlugins={[rehypeHighlight]}
-						remarkPlugins={[remarkGfm]}
-						className="Markdown mt-4 mb-4"
-					>
-						{description}
-					</ReactMarkdown>
+					<div
+						className="Markdown"
+						dangerouslySetInnerHTML={{
+							__html: new MarkdownIt({
+								html: true,
+								linkify: true,
+								typographer: true,
+								highlight: function (str, lang) {
+									if (lang && hljs.getLanguage(lang)) {
+										try {
+											return hljs.highlight(str, { language: lang }).value;
+										} catch (__) {}
+									}
+
+									return ""; // use external default escaping
+								},
+							})
+								.use(taskLists)
+								.render(description),
+						}}
+					></div>
 
 					{tags && tags.length > 0 && (
 						<div className="mt-4 mb-2">

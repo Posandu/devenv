@@ -121,6 +121,7 @@ function EditItem({ id }: EditItemProps) {
 					<div className="p-2"></div>
 					<Input
 						value={name}
+						fullWidth
 						onChange={(e) => setName(e.target.value)}
 						placeholder="Name"
 					/>
@@ -130,12 +131,14 @@ function EditItem({ id }: EditItemProps) {
 						multiline
 						value={description}
 						rows={5}
+						fullWidth
 						placeholder="Description"
 						onChange={(e) => setDescription(e.target.value)}
 					/>
 					<div className="p-2"></div>
 					<Input
 						value={tags.join(",")}
+						fullWidth
 						placeholder="Tags (comma separated)"
 						onChange={(e) => setTags(e.target.value.split(","))}
 					/>

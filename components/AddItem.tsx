@@ -10,16 +10,21 @@ import {
 	Checkbox,
 } from "@mui/material";
 import { useState, useEffect, useRef } from "react";
-import { AiFillEye, AiOutlineDelete, AiOutlineEye, AiOutlineTags } from "react-icons/ai";
+import {
+	AiFillEye,
+	AiOutlineDelete,
+	AiOutlineEye,
+	AiOutlineTags,
+} from "react-icons/ai";
 import { BsListCheck, BsCode } from "react-icons/bs";
 import { FiImage } from "react-icons/fi";
 import { BiLabel } from "react-icons/bi";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeHighlight from "rehype-highlight";
 import Background from "./Background";
 import SelectLabel from "./SelectLabels";
 import toast from "react-hot-toast";
+import MarkdownIt from "markdown-it";
+import hljs from "highlight.js";
+import taskLists from "markdown-it-task-lists";
 
 interface Iconprops {
 	icon: any;
@@ -279,13 +284,27 @@ function AddItem() {
 				<DialogContent>
 					<div className="text-gray-800 text-xl mb-2">Preview</div>
 					<div className="Markdown border border-gray-100 p-4 rounded">
-						<ReactMarkdown
-							remarkPlugins={[remarkGfm]}
-							rehypePlugins={[rehypeHighlight]}
-						>
-							{(descriptionRef.current && descriptionRef.current.value) ||
-								"Nothing to preview"}
-						</ReactMarkdown>
+						<div
+							dangerouslySetInnerHTML={{
+								__html: new MarkdownIt({
+									html: true,
+									linkify: true,
+									typographer: true,
+									highlight: function (str, lang) {
+										if (lang && hljs.getLanguage(lang)) {
+										  try {
+											return hljs.highlight(str, { language: lang }).value;
+										  } catch (__) {}
+										}
+									
+										return ''; // use external default escaping
+									  }
+								}).use(taskLists).render(
+									(descriptionRef.current && descriptionRef.current.value) ||
+										"Nothing to preview"
+								),
+							}}
+						></div>
 					</div>
 					<div className="p-2"></div>
 					<Button
