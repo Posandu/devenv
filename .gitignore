@@ -3,3 +3,5 @@ node_modules/
 .env
 .env.local
 prisma/migrations
+# Local Netlify folder
+.netlify
